@@ -2,12 +2,12 @@ OUTF=postm
 BIND=bin
 SRCD=src
 
-all: compile
+all: build
 	$(BIND)/$(OUTF)
 
-compile:
-	gcc -Wall -pedantic -std=c99 $(SRCD)/*.c -o $(BIND)/$(OUTF)
+build:
+	gcc -Wall -pedantic -std=c89 $(SRCD)/*.c -o $(BIND)/$(OUTF)
+	cp -f $(BIND)/hd.txt.bak $(BIND)/hd.txt
 
 clean:
-	rm $(BIND)/$(OUTF)
-	cp -f $(BIND)/hd.txt.bak $(BIND)/hd.txt
+	rm $(BIND)/$(OUTF) $(BIND)/hd.txt

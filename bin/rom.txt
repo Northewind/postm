@@ -1,3 +1,8 @@
+# Program for adding two numbers
+#   that is wrote in unary numeral system
+#   at the begin of the memory
+#   and have one whitespace between them.
+
 ?2;3
 R1
 V4

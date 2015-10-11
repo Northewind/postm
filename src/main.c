@@ -23,7 +23,6 @@
 
 static int PC = 0;
 static int addr = 0;
-static int iter_count = 0;
 
 
 static excode_t run()
@@ -46,31 +45,27 @@ static excode_t run()
 		PC = prog[PC].a1;
 		break;
 	case OP_CHK:
-		if (ram[addr])
-			PC = prog[PC].a1;
-		else
-			PC = prog[PC].a2;
+		PC = (ram[addr]) ? prog[PC].a1 : prog[PC].a2;
 		break;
 	case OP_HLT:
 		return E_HLT;
 	}
-	if (PC < 0 || PC >= prog_len || ++iter_count == INT_MAX)
-		return E_RUNERR;
-	else
-		return E_SUCC;
+	if (PC < 0 || PC >= prog_len) return E_RUNERR;
+	return E_SUCC;
 }
 
 
 int main(int argc, char* argv[])
 {
 	excode_t res;
+	int iter_count = 0;
 	if ((res = read_rom()) != E_SUCC) return res;
 	if ((res = read_hd()) != E_SUCC) return res;
 	while ((res = run()) != E_HLT) {
 		if (res != E_SUCC) return res;
+		if (++iter_count == INT_MAX) return E_RUNERR;
 	}
-	res = store_ram(NULL);
-	res = fini_hd();
-	return res;
+	if ((res = store_ram(NULL)) != E_SUCC) return res;
+	return fini_hd();
 }
 

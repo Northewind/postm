@@ -43,7 +43,10 @@ static excode_t cmd_add(opcode_t op, addr_t a1, addr_t a2)
 		prog = p;
 		reserved += PROG_SIZE_INCR;
 	}
-	prog[prog_len++] = (cmd_t) {op, a1 - 1, a2 - 1};
+	prog[prog_len].op = op;
+	prog[prog_len].a1 = a1 - 1;
+	prog[prog_len].a2 = a2 - 1;
+	prog_len++;
 	return E_SUCC;
 }
 
@@ -159,9 +162,10 @@ excode_t store_ram(FILE *f)
 excode_t fini_hd()
 {
 	excode_t r = E_SUCC;
-	if (fclose(fil_hd))
+	if (fclose(fil_hd) == EOF)
 		r = E_HD;
-	fil_hd = NULL;
+	else
+		fil_hd = NULL;
 	return r;
 }
 

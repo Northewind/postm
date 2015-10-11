@@ -20,9 +20,7 @@
 #include <string.h>
 #include "bios.h"
 
-#define FIL_ROM "rom.txt"
-#define FIL_HD  "hd.txt"
-#define CMD_STR_LEN 64 
+#define CMD_STR_LEN 64
 #define PROG_SIZE_INCR 32
 
 cmd_t *prog = NULL;
@@ -51,16 +49,16 @@ static excode_t cmd_add(opcode_t op, addr_t a1, addr_t a2)
 }
 
 
-excode_t read_rom()
+excode_t read_rom(char *filename)
 {
 	char *cmd;
 	FILE *f;
 	int addr1, addr2;
 	excode_t result = E_SUCC;
 	if ((cmd = malloc(CMD_STR_LEN)) == NULL) return E_MEM;
-	if ((f = fopen(FIL_ROM, "r")) == NULL) {
+	if ((f = fopen(filename, "r")) == NULL) {
 		free(cmd);
-		return E_ROM;
+		return E_FILE;
 	}
 	while (fgets(cmd, CMD_STR_LEN, f)) {
 		switch (cmd[0]) {
@@ -88,7 +86,7 @@ excode_t read_rom()
 			if (cmd_add(OP_HLT, 0, 0) != E_SUCC) goto mem;
 			break;
 		case '#':  /* For comments */
-		case '\n': /* Ignore whitespaces */
+		case '\n': /* Ignore whitespace */
 		case '\r':
 		case ' ':
 			break;
@@ -96,13 +94,15 @@ excode_t read_rom()
 			goto prs;
 		}
 	}
-	if (ferror(f)) result = E_ROM; 
+	if (ferror(f)) result = E_FILE; 
 cln: /* Clean and return */
 	fclose(f);
 	free(cmd);
 	free(prog);
 	return result;
 prs: /* Parse error */
+	fprintf(stderr, "Parse error in command #%d:\n\n"
+	        "\t%s\n\n", prog_len, cmd);
 	result = E_PARSE;
 	goto cln;
 mem: /* Memory error */
@@ -111,11 +111,11 @@ mem: /* Memory error */
 }
 
 
-excode_t read_hd()
+excode_t read_hd(char* filename)
 {
 	int ad = 0;
 	int c;
-	if ((fil_hd = fopen(FIL_HD, "r+")) == NULL) return E_HD;
+	if ((fil_hd = fopen(filename, "r+")) == NULL) return E_FILE;
 	while ((c = fgetc(fil_hd)) != EOF) {
 		switch(c) {
 		case '0':
@@ -124,7 +124,7 @@ excode_t read_hd()
 		case '1':
 			ram[ad++] = 1;
 			break;
-		case '\n': /* Just ignore */
+		case '\n': /* Ignore whitespace */
 		case '\r':
 		case ' ':
 			break;	
@@ -133,7 +133,7 @@ excode_t read_hd()
 		}
 		if (ad == RAM_SIZE) break;
 	}
-	if (ferror(fil_hd)) return E_HD;
+	if (ferror(fil_hd)) return E_FILE;
 	memset(ram + ad, 0, RAM_SIZE - ad);
 	return E_SUCC;
 }
@@ -148,13 +148,14 @@ excode_t store_ram(FILE *f)
 		if (ad % 8 == 0) fputc(' ', f);
 		switch (ram[ad]) {
 			case 0:
-				if (fputc('0', f) == EOF) return E_HD;
+				if (fputc('0', f) == EOF) return E_FILE;
 				break;
 			case 1:
-				if (fputc('1', f) == EOF) return E_HD;
+				if (fputc('1', f) == EOF) return E_FILE;
 				break;
 		}
 	}
+	fputc('\n', f);
 	return E_SUCC;
 }
 
@@ -163,7 +164,7 @@ excode_t fini_hd()
 {
 	excode_t r = E_SUCC;
 	if (fclose(fil_hd) == EOF)
-		r = E_HD;
+		r = E_FILE;
 	else
 		fil_hd = NULL;
 	return r;
@@ -206,3 +207,7 @@ void print_prog()
 	}
 }
 
+void print_usage()
+{
+	puts("Usage: postm <progfile> <memfile>");
+}

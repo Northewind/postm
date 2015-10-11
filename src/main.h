@@ -19,7 +19,14 @@
 #define MAIN_H
 
 typedef enum excode {
-	E_SUCC, E_HLT, E_ROM, E_MEM, E_PARSE, E_HD, E_HD_PRS, E_RUNERR
+	E_SUCC,   /* Operation successfully completes */
+	E_HLT,    /* Stop of runtime (successfully completing) */
+	E_FILE,   /* Common file IO error */
+	E_START,  /* Invalid command line args */
+	E_MEM,    /* Not enough memory */
+	E_PARSE,  /* Parse error in program text */
+	E_HD_PRS, /* Parse error in memory file */
+	E_RUNERR  /* Runtime error: jump to noexist command, cycle iters exceeded */
 } excode_t;
 
 

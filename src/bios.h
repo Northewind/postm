@@ -26,12 +26,13 @@ extern char ram[];
 extern cmd_t *prog;
 extern int prog_len;
 
-excode_t read_rom();
-excode_t read_hd();
+excode_t read_rom(char* filename);
+excode_t read_hd(char* filename);
 excode_t store_ram(FILE*);
 excode_t fini_hd();
 
 void print_cmd(cmd_t);
 void print_prog();
+void print_usage();
 
 #endif /* BIOS_H */

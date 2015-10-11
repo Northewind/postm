@@ -25,7 +25,7 @@ static int PC = 0;
 static int addr = 0;
 
 
-static excode_t run()
+static excode_t runcmd()
 {
 	switch (prog[PC].op) {
 	case OP_SET:
@@ -59,13 +59,18 @@ int main(int argc, char* argv[])
 {
 	excode_t res;
 	int iter_count = 0;
-	if ((res = read_rom()) != E_SUCC) return res;
-	if ((res = read_hd()) != E_SUCC) return res;
-	while ((res = run()) != E_HLT) {
+	if (argc != 3) {
+		print_usage();
+		return E_START;
+	}
+	if ((res = read_rom(argv[1])) != E_SUCC) return res;
+	if ((res = read_hd(argv[2])) != E_SUCC) return res;
+	print_prog(); /* Debug print */
+	while ((res = runcmd()) != E_HLT) {
 		if (res != E_SUCC) return res;
 		if (++iter_count == INT_MAX) return E_RUNERR;
 	}
-	if ((res = store_ram(NULL)) != E_SUCC) return res;
+	if ((res = store_ram(stdout)) != E_SUCC) return res;
 	return fini_hd();
 }
 

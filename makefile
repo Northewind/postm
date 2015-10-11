@@ -3,11 +3,11 @@ BIND=bin
 SRCD=src
 
 all: build
-	$(BIND)/$(OUTF)
+	cd $(BIND) \
+	./$(OUTF) rom.txt hd.txt
 
 build:
 	gcc -Wall -pedantic -std=c89 $(SRCD)/*.c -o $(BIND)/$(OUTF)
-	cp -f $(BIND)/hd.txt.bak $(BIND)/hd.txt
 
 clean:
-	rm $(BIND)/$(OUTF) $(BIND)/hd.txt
+	rm $(BIND)/$(OUTF)

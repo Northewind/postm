@@ -1,0 +1,26 @@
+?3;2    # Is number reached?
+R1
+?4;5    # Is number not passed yet?
+R3
+L6
+L7
+?8;17   # Is it not last digit to move?
+R9
+X10
+R11
+R12
+R13
+R14
+V15
+L16
+?6;15   # Is (old) number reached?
+R18
+X19
+R20
+R21
+R22
+R23
+V24
+!
+# Task 5:
+#   move number in unary numeral system on 4 position in right.

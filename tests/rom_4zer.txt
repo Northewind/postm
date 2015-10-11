@@ -1,0 +1,20 @@
+?3;2   # Is first number reached?
+R1
+?4;5   # Is first number not passed yet?
+R3
+?7;6   # Is whitespace between numbers passed (is second number reached)?
+R5
+R8
+?9;15  # Is it not last digit of second number remains?
+L10
+X11
+L12
+?13;11  # Is whitespace between numbers passed (is first number reached)?
+R14
+V6
+L16
+X17
+!
+
+# Task 4 in unary code with zero:
+#   adding two numbers

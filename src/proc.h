@@ -20,7 +20,7 @@
 
 #include "excode.h"
 
-#define RAM_SIZE 65536
+#define RAM_SIZE 0xFFFF 
 
 typedef enum opcode {
 	OP_SET, OP_UNSET, OP_LFT, OP_RGH, OP_CHK, OP_HLT
@@ -40,7 +40,9 @@ extern char ram[];
 extern cmd_t *prog;
 
 int prog_len();
+
 excode_t cmd_add(opcode_t op, addr_t a1, addr_t a2);
 excode_t runcmd();
 
 #endif /* PROC_H */
+

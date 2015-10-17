@@ -24,10 +24,9 @@
 
 excode_t read_rom(char* filename);
 excode_t read_hd(char* filename);
-excode_t store_ram(FILE*);
-excode_t fini_hd();
 
-void print_cmd(cmd_t, FILE*);
+void print_ram();
+void print_cmd(cmd_t);
 void print_prog();
 void print_usage();
 

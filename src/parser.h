@@ -1,4 +1,4 @@
-/* main - interpreter start point and command processing cycle
+/* parser - parsing program file and initial data
  * 
  * Copyright 2015 Alexander Loshkin
  *
@@ -15,28 +15,13 @@
  * GNU General Public License for more details.
  */
 
-#include <limits.h>
+#ifndef PARSER_H
+#define PARSER_H
+
 #include "excode.h"
-#include "bios.h"
-#include "proc.h"
 
+excode_t prs_progline(char *str);
+excode_t prs_datafile(FILE*);
 
-int main(int argc, char* argv[])
-{
-	excode_t res;
-	int iter_count = 0;
-	if (argc != 3) {
-		print_usage();
-		return E_START;
-	}
-	if ((res = read_rom(argv[1])) != E_SUCC) return res;
-	if ((res = read_hd(argv[2])) != E_SUCC) return res;
-	while ((res = runcmd()) != E_HLT) {
-		if (res != E_SUCC) return res;
-		if (++iter_count == INT_MAX) return E_RUN;
-	}
-	print_prog();
-	print_ram();
-	return E_SUCC;
-}
+#endif /* PARSER_H */
 

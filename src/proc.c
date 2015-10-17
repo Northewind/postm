@@ -46,8 +46,8 @@ excode_t cmd_add(opcode_t op, addr_t a1, addr_t a2)
 		reserved += PROG_SIZE_INCR;
 	}
 	prog[cmd_count].op = op;
-	prog[cmd_count].a1 = a1 - 1;
-	prog[cmd_count].a2 = a2 - 1;
+	prog[cmd_count].a1 = (a1 == 0)  ?  cmd_count + 1  :  a1 - 1;
+	prog[cmd_count].a2 = (a2 == 0)  ?  cmd_count + 1  :  a2 - 1;
 	cmd_count++;
 	return E_SUCC;
 }
@@ -78,7 +78,7 @@ excode_t runcmd()
 	case OP_HLT:
 		return E_HLT;
 	}
-	if (PC < 0 || PC >= cmd_count) return E_RUN;
+	if (PC >= cmd_count) return E_RUN;
 	return E_SUCC;
 }
 

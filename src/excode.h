@@ -1,4 +1,4 @@
-/* main - main data types
+/* excode - exit codes that program return
  * 
  * Copyright 2015 Alexander Loshkin
  *
@@ -15,8 +15,8 @@
  * GNU General Public License for more details.
  */
 
-#ifndef MAIN_H
-#define MAIN_H
+#ifndef EXCODE_H
+#define EXCODE_H
 
 typedef enum excode {
 	E_SUCC,   /* Operation successfully completes */
@@ -26,24 +26,7 @@ typedef enum excode {
 	E_MEM,    /* Not enough memory */
 	E_PARSE,  /* Parse error in program text */
 	E_HD_PRS, /* Parse error in memory file */
-	E_RUNERR  /* Runtime error: jump to noexist command, cycle iters exceeded */
+	E_RUN     /* Runtime error: jump to non-existent command, cycle iters exceeded */
 } excode_t;
 
-
-typedef enum opcode {
-	OP_SET, OP_UNSET, OP_LFT, OP_RGH, OP_CHK, OP_HLT
-} opcode_t;
-
-
-typedef int addr_t;
-
-
-typedef struct {
-	opcode_t op;
-	addr_t a1;
-	addr_t a2;
-} cmd_t;
-
-#define CMD_SIZE sizeof(cmd_t)
-
-#endif /* MAIN_H */
+#endif /* EXCODE_H */

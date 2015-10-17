@@ -2,6 +2,6 @@
 R1
 V4
 !
-# Task 1 in both numeral systems (simple unary and unary with zero)
-#   increment the number, which is written in memory start.
+ Task 1 in both numeral systems (simple unary and unary with zero)
+ increment the number, which is written in memory start.
 

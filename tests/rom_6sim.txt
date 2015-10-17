@@ -54,7 +54,8 @@ X54     # Ruin left border
 !
 L43
 R43
-# Task 6:
-#   compute average of two given numbers
-#	which are written in memory start
-#   in simple unary numeral system
+
+ Task 6:
+ compute average of two given numbers
+ which are written in memory start
+ in simple unary numeral system

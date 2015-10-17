@@ -21,32 +21,8 @@
 #include "bios.h"
 
 #define CMD_STR_LEN 64
-#define PROG_SIZE_INCR 32
-
-cmd_t *prog = NULL;
-int prog_len = 0;
-char ram[RAM_SIZE];
 
 static FILE *fil_hd = NULL;
-
-
-static excode_t cmd_add(opcode_t op, addr_t a1, addr_t a2)
-{
-	cmd_t *p;
-	static int reserved = 0;
-	if (prog_len == reserved) {
-		if (!(p = realloc(prog, CMD_SIZE*(reserved + PROG_SIZE_INCR)))) {
-			return E_MEM;
-		}
-		prog = p;
-		reserved += PROG_SIZE_INCR;
-	}
-	prog[prog_len].op = op;
-	prog[prog_len].a1 = a1 - 1;
-	prog[prog_len].a2 = a2 - 1;
-	prog_len++;
-	return E_SUCC;
-}
 
 
 excode_t read_rom(char *filename)
@@ -85,7 +61,6 @@ excode_t read_rom(char *filename)
 		case '!':
 			if (cmd_add(OP_HLT, 0, 0) != E_SUCC) goto mem;
 			break;
-		case '#':  /* For comments */
 		case '\n': /* Ignore whitespace */
 		case '\r':
 		case ' ':
@@ -102,7 +77,7 @@ cln: /* Clean and return */
 	return result;
 prs: /* Parse error */
 	fprintf(stderr, "Parse error in command #%d:\n\n"
-	        "\t%s\n\n", prog_len, cmd);
+	        "\t%s\n\n", prog_len(), cmd);
 	result = E_PARSE;
 	goto cln;
 mem: /* Memory error */
@@ -171,28 +146,28 @@ excode_t fini_hd()
 }
 
 
-void print_cmd(cmd_t c)
+void print_cmd(cmd_t c, FILE* outf)
 {
 	c.a1++;
 	c.a2++;
 	switch (c.op) {
 	case OP_SET:
-		printf("V%d\n", c.a1);
+		fprintf(outf, "V%d\n", c.a1);
 		break;
 	case OP_UNSET:
-		printf("X%d\n", c.a1);
+		fprintf(outf, "X%d\n", c.a1);
 		break;
 	case OP_LFT:
-		printf("L%d\n", c.a1);
+		fprintf(outf, "L%d\n", c.a1);
 		break;
 	case OP_RGH:
-		printf("R%d\n", c.a1);
+		fprintf(outf, "R%d\n", c.a1);
 		break;
 	case OP_CHK:
-		printf("?%d;%d\n", c.a1, c.a2);
+		fprintf(outf, "?%d;%d\n", c.a1, c.a2);
 		break;
 	case OP_HLT:
-		printf("!\n");
+		fprintf(outf, "!\n");
 		break;
 	}
 }
@@ -201,9 +176,10 @@ void print_cmd(cmd_t c)
 void print_prog()
 {
 	int pc;
-	for (pc = 0; pc < prog_len; pc++) {
-		printf("%d: ", pc+1);
-		print_cmd(prog[pc]);
+	int n = prog_len();
+	for (pc = 0; pc < n; pc++) {
+		fprintf(stdout, "%d. ", pc+1);
+		print_cmd(prog[pc], stdout);
 	}
 }
 

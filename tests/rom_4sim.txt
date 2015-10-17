@@ -20,5 +20,5 @@ R20
 V21
 !
 
-# Task 4 in simple unary code:
-#   adding two numbers
+ Task 4 in simple unary code:
+ adding two numbers

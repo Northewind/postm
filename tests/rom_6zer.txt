@@ -52,7 +52,7 @@ R52
 ?53;51  # Is whitespace till right border passed?
 X54     # Ruin left border
 !
-# Task 6:
-#   compute average of two given numbers
-#	which are written in memory start
-#   in unary numeral system with the zero
+ Task 6:
+ compute average of two given numbers
+ which are written in memory start
+ in unary numeral system with the zero

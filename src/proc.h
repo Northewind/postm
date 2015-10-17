@@ -1,4 +1,4 @@
-/* main - interpreter start point
+/* processor - main instruction processor
  * 
  * Copyright 2015 Alexander Loshkin
  *
@@ -15,28 +15,32 @@
  * GNU General Public License for more details.
  */
 
-#include <limits.h>
+#ifndef PROC_H
+#define PROC_H
+
 #include "excode.h"
-#include "bios.h"
-#include "proc.h"
 
+#define RAM_SIZE 65536
 
-int main(int argc, char* argv[])
-{
-	excode_t res;
-	int iter_count = 0;
-	if (argc != 3) {
-		print_usage();
-		return E_START;
-	}
-	if ((res = read_rom(argv[1])) != E_SUCC) return res;
-	if ((res = read_hd(argv[2])) != E_SUCC) return res;
-	print_prog(); /* Debug print */
-	while ((res = runcmd()) != E_HLT) {
-		if (res != E_SUCC) return res;
-		if (++iter_count == INT_MAX) return E_RUN;
-	}
-	if ((res = store_ram(stdout)) != E_SUCC) return res;
-	return fini_hd();
-}
+typedef enum opcode {
+	OP_SET, OP_UNSET, OP_LFT, OP_RGH, OP_CHK, OP_HLT
+} opcode_t;
 
+typedef int addr_t;
+
+typedef struct cmd {
+	opcode_t op;
+	addr_t a1;
+	addr_t a2;
+} cmd_t;
+
+#define CMD_SIZE sizeof(cmd_t)
+
+extern char ram[];
+extern cmd_t *prog;
+
+int prog_len();
+excode_t cmd_add(opcode_t op, addr_t a1, addr_t a2);
+excode_t runcmd();
+
+#endif /* PROC_H */

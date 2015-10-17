@@ -6,8 +6,8 @@ R4
 L7
 X8
 !
-# Task 2 in simple unary code
-#   adding two numbers
-#   which are written in first memory address
-#   and are separated with one zero between them.
+ Task 2 in simple unary code
+ adding two numbers
+ which are written in first memory address
+ and are separated with one zero between them.
 

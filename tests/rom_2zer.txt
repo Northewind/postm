@@ -8,8 +8,8 @@ X8
 L9
 X10
 !
-# Task 2 in unary code with zero
-#   adding two numbers
-#   which are written in first memory address
-#   and are separated with one zero between them.
+ Task 2 in unary code with zero
+ adding two numbers
+ which are written in first memory address
+ and are separated with one zero between them.
 

@@ -16,5 +16,5 @@ L16
 X17
 !
 
-# Task 4 in unary code with zero:
-#   adding two numbers
+ Task 4 in unary code with zero:
+ adding two numbers

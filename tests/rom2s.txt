@@ -1,0 +1,11 @@
+X2
+R3
+?2;4
+V5
+!
+
+# Task 2 in simple unary code
+#   adding two numbers
+#   which are written in first memory address
+#   and are separated with one zero between them.
+

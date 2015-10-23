@@ -14,11 +14,8 @@ R14
 V6
 L16
 X17
-?19;18  # Is whitespace between numbers passed (is first number reached)?
-L17
-R20
-V21
 !
 
- Task 4 in simple unary code:
- adding two numbers
+# Task 4 in unary code with zero:
+#   adding two numbers
+

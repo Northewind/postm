@@ -22,5 +22,6 @@ R22
 R23
 V24
 !
- Task 5:
- move number in unary numeral system on 4 position in right.
+
+# Task 5:
+#   move number in unary numeral system on 4 position in right.

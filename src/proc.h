@@ -20,7 +20,7 @@
 
 #include "excode.h"
 
-#define RAM_SIZE 0xFFFF 
+#define RAM_SIZE 0x10000
 
 typedef enum opcode {
 	OP_SET, OP_UNSET, OP_LFT, OP_RGH, OP_CHK, OP_HLT
